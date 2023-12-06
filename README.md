@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
 from tkinter import ttk
 
@@ -15,39 +16,49 @@ def criar_grafico(tempo_maquina1, tempo_operador1, tempo_maquina2, tempo_operado
     ax.set_ylabel('Tempo (segundos)')
     ax.set_title(titulo)
     ax.legend()
-    plt.show()
+
+    # Criar uma nova janela para exibir o gráfico
+    nova_janela = tk.Tk()
+    nova_janela.title("Gráfico")
+
+    # Incorporar o gráfico na nova janela
+    canvas = FigureCanvasTkAgg(fig, master=nova_janela)
+    canvas.draw()
+    canvas.get_tk_widget().pack()
+
+    nova_janela.mainloop()
 
 def criar_interface_grafica():
     def plotar_grafico():
-        tempo_maquina1 = float(entry_maquina1.get())
         tempo_operador1 = float(entry_operador1.get())
-        tempo_maquina2 = float(entry_maquina2.get())
+        tempo_maquina1 = float(entry_maquina1.get())
         tempo_operador2 = float(entry_operador2.get())
+        tempo_maquina2 = float(entry_maquina2.get())
         titulo = entry_titulo.get()
-        criar_grafico(tempo_maquina1, tempo_operador1, tempo_maquina2, tempo_operador2, titulo)
+        criar_grafico(   tempo_operador1,  tempo_maquina1,   tempo_operador2 ,tempo_maquina2, titulo)
 
     root = tk.Tk()
     root.title("Interface Gráfica")
+    # Operador 1
+    ttk.Label(root, text="Tempo do Operador 1 (segundos):").grid(row=1, column=0)
+    entry_operador1 = ttk.Entry(root)
+    entry_operador1.grid(row=1, column=1)
 
     # Máquina 1
     ttk.Label(root, text="Tempo da Máquina 1 (segundos):").grid(row=0, column=0)
     entry_maquina1 = ttk.Entry(root)
     entry_maquina1.grid(row=0, column=1)
 
-    # Operador 1
-    ttk.Label(root, text="Tempo do Operador 1 (segundos):").grid(row=1, column=0)
-    entry_operador1 = ttk.Entry(root)
-    entry_operador1.grid(row=1, column=1)
+    # Operador 2
+    ttk.Label(root, text="Tempo do Operador 2 (segundos):").grid(row=3, column=0)
+    entry_operador2 = ttk.Entry(root)
+    entry_operador2.grid(row=3, column=1)
+
 
     # Máquina 2
     ttk.Label(root, text="Tempo da Máquina 2 (segundos):").grid(row=2, column=0)
     entry_maquina2 = ttk.Entry(root)
     entry_maquina2.grid(row=2, column=1)
-
-    # Operador 2
-    ttk.Label(root, text="Tempo do Operador 2 (segundos):").grid(row=3, column=0)
-    entry_operador2 = ttk.Entry(root)
-    entry_operador2.grid(row=3, column=1)
 
     # Título
     ttk.Label(root, text="Título do Gráfico:").grid(row=4, column=0)
